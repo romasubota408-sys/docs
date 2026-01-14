@@ -1,127 +1,367 @@
----
-title: About repositories
-intro: A repository contains all of your code, your files, and each file's revision history. You can discuss and manage your work within the repository.
-redirect_from:
-  - /articles/about-repositories
-  - /github/creating-cloning-and-archiving-repositories/about-repositories
-  - /github/creating-cloning-and-archiving-repositories/creating-a-repository-on-github/about-repositories
-  - /github/creating-cloning-and-archiving-repositories/about-repository-visibility
-  - /github/creating-cloning-and-archiving-repositories/creating-a-repository-on-github/about-repository-visibility
-  - /articles/what-are-the-limits-for-viewing-content-and-diffs-in-my-repository
-  - /articles/limits-for-viewing-content-and-diffs-in-a-repository
-  - /github/creating-cloning-and-archiving-repositories/limits-for-viewing-content-and-diffs-in-a-repository
-  - /github/creating-cloning-and-archiving-repositories/creating-a-repository-on-github/limits-for-viewing-content-and-diffs-in-a-repository
-versions:
-  fpt: '*'
-  ghes: '*'
-  ghec: '*'
-topics:
-  - Repositories
----
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>ЛР №3 — Верстка CSS / Float / Flexbox (Варіант 4)</title>
 
-## About repositories
+  <style>
+    /* ====== БАЗОВЕ ОФОРМЛЕННЯ ====== */
+    body{margin:0;font-family:Arial, sans-serif;background:#f3f4f6;color:#111;line-height:1.5}
+    .wrap{max-width:1100px;margin:0 auto;padding:16px}
+    header{background:#111827;color:#fff;border-radius:12px;padding:14px 14px 10px}
+    header h1{margin:0 0 6px;font-size:20px}
+    header p{margin:0;color:#cbd5e1;font-size:14px}
+    nav{margin-top:10px;display:flex;flex-wrap:wrap;gap:8px}
+    nav a{
+      display:inline-block;padding:8px 10px;border-radius:10px;
+      text-decoration:none;background:#1f2937;color:#e5e7eb;border:1px solid rgba(255,255,255,.12);
+      font-size:13px
+    }
+    nav a:hover{background:#0b1220}
+    .card{background:#fff;border:1px solid #d1d5db;border-radius:12px;padding:14px;margin-top:14px}
+    .muted{color:#4b5563}
+    .hint{background:#eef2ff;border-left:5px solid #6366f1;padding:10px;border-radius:10px}
+    .hr{height:1px;background:#e5e7eb;margin:14px 0}
+    .center{display:flex;align-items:center;justify-content:center}
+    .tag{display:inline-block;padding:3px 8px;border-radius:999px;background:#e5e7eb;font-size:12px;margin-left:6px}
 
-A repository is the most basic element of {% data variables.product.prodname_dotcom %}. It's a place where you can store your code, your files, and each file's revision history. Repositories can have multiple collaborators and can be either public{% ifversion ghes or ghec %}, internal,{% endif %} or private.
+    /* ====== “ПЕРЕМИКАЧ РОЗДІЛІВ” БЕЗ JS ====== */
+    .page{display:none}
+    .page:target{display:block}
+    #home{display:block}
+    :target ~ #home{display:none}
 
-To create a new repository, go to [https://github.com/new](https://github.com/new). For instructions, see [AUTOTITLE](/repositories/creating-and-managing-repositories/quickstart-for-repositories).
+    /* ====== ЗАВДАННЯ №1 (макет сайту) ====== */
+    .siteHeader{background:#0f172a;color:#fff;border-radius:12px;padding:12px}
+    .siteHeader .links a{color:#93c5fd;text-decoration:none;margin-right:10px;font-size:14px}
+    .siteLayout{display:flex;gap:12px;margin-top:12px}
+    .siteAside{width:240px;background:#f9fafb;border:1px solid #e5e7eb;border-radius:12px;padding:12px}
+    .siteMain{flex:1;background:#f9fafb;border:1px solid #e5e7eb;border-radius:12px;padding:12px}
+    .siteFooter{margin-top:12px;background:#0f172a;color:#fff;border-radius:12px;padding:12px}
+    @media(max-width:850px){
+      .siteLayout{flex-direction:column}
+      .siteAside{width:auto}
+    }
 
-## Repository terminology
+    /* ====== ЗАВДАННЯ №2: ТАБЛИЦІ ====== */
+    .demoBox{border:1px solid #9ca3af;background:#fff;border-radius:10px;padding:10px}
+    .tableFrameFixed{width:900px;max-width:100%;margin:0 auto;border:2px solid #111}
+    .tableFrameFluid{width:95%;max-width:1100px;margin:0 auto;border:2px solid #111}
+    .t{width:100%;border-collapse:collapse}
+    .t td, .t th{border:2px solid #111;padding:10px;vertical-align:top}
+    .tHead,.tFoot{background:#fde047;font-weight:bold;text-align:center}
+    .tLeft,.tRight{background:#2563eb;color:#111;font-weight:bold;width:20%;text-align:center}
+    .tMid{background:#fff;min-height:220px}
+    .tRow{height:260px}
 
-Before getting started with repositories, learn these important terms.
+    /* ====== ЗАВДАННЯ №2: FLOAT (плаваючі блоки) ====== */
+    .floatFrameFixed{width:900px;max-width:100%;margin:0 auto;border:2px solid #111;background:#fff}
+    .floatFrameFluid{width:95%;max-width:1100px;margin:0 auto;border:2px solid #111;background:#fff}
+    .fHeader,.fFooter{background:#fde047;font-weight:bold;text-align:center;padding:12px;border-bottom:2px solid #111}
+    .fFooter{border-top:2px solid #111;border-bottom:none}
+    .fLeft{float:left;background:#2563eb;color:#111;font-weight:bold;min-height:260px;padding:10px;border-right:2px solid #111}
+    .fRight{float:right;background:#2563eb;color:#111;font-weight:bold;min-height:260px;padding:10px;border-left:2px solid #111}
+    .fContent{min-height:260px;padding:10px}
+    .clearfix{clear:both}
 
-{% rowheaders %}
+    .fixed180{width:180px}
+    .fixedContent{margin:0 190px}
 
-Term | Definition |
----- | ---------- |
-Branch | A parallel version of your code that is contained within the repository, but does not affect the primary or main branch.
-Clone | To download a full copy of a repository's data from {% data variables.location.product_location %}, including all versions of every file and folder.
-Fork | A new repository that shares code and visibility settings with the original "upstream" repository.
-Merge | To take the changes from one branch and apply them to another.
-Pull request | A request to merge changes from one branch into another.
-Remote | A repository stored on {% data variables.product.github %}, not on your computer.
-Upstream | The branch on an original repository that has been forked or cloned. The corresponding branch on the cloned or forked repository is called the "downstream."
+    .fluid20{width:20%}
+    .fluidContent{margin:0 21%}
 
-{% endrowheaders %}
+    /* ====== ЗАВДАННЯ №3: FLEXBOX ВАРІАНТ 4 ====== */
+    .flexTitle{font-weight:bold;margin-bottom:8px}
+    .frame{
+      width:420px;
+      border:3px solid #111;
+      background:#fff;
+      padding:8px;
+    }
+    .top{
+      background:#fde047;
+      border:2px solid #111;
+      height:55px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      position:relative;
+      font-weight:bold;
+    }
+    .mini{
+      position:absolute;
+      left:12px;
+      width:110px;
+      height:26px;
+      background:#fff;
+      border:2px solid #111;
+    }
+    .middle{
+      display:flex;
+      gap:10px;
+      padding:10px 0;
+      min-height:240px;
+      align-items:stretch;
+    }
+    .left, .right{
+      background:#2563eb;
+      border:2px solid #111;
+      flex:0 0 30%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:bold;
+      color:#111;
+    }
+    .centerBlock{
+      background:#fff;
+      border:2px solid #999;
+      flex:1;
+      display:flex;
+      flex-direction:column;
+      justify-content:flex-end;
+      align-items:center;
+      padding:10px;
+      position:relative;
+      font-weight:bold;
+      color:#111;
+    }
+    .centerBlock .num{
+      position:absolute;
+      top:10px;
+      font-weight:bold;
+      color:#111;
+    }
+    .red{
+      width:80%;
+      height:38px;
+      background:#ef4444;
+      border:2px solid #111;
+      margin-top:10px;
+    }
+    .bottom{
+      background:#fde047;
+      border:2px solid #111;
+      height:55px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:bold;
+    }
 
-## About repository ownership
+    /* ====== Код (для звіту) ====== */
+    pre{background:#0b1020;color:#e5e7eb;padding:12px;border-radius:10px;overflow:auto}
+    code{font-family:Consolas, monospace;font-size:12px}
+  </style>
+</head>
 
-You can own repositories individually, or you can share ownership of repositories with other people in an organization.
+<body>
+  <div class="wrap">
+    <header>
+      <h1>ЛАБОРАТОРНА РОБОТА №3 — Верстка HTML (CSS / Float / Flexbox) <span class="tag">Варіант 4</span></h1>
+      <p>Навігація по виконаних завданнях лабораторної роботи.</p>
+      <nav>
+        <a href="#home">Завдання 1</a>
+        <a href="#task2">Завдання 2</a>
+        <a href="#flex">Завдання 3</a>
+        <a href="#report">Звіт</a>
+      </nav>
+    </header>
 
-In either case, access to repositories is managed by permissions. For more information, see [AUTOTITLE](/account-and-profile/setting-up-and-managing-your-personal-account-on-github/managing-personal-account-settings/permission-levels-for-a-personal-account-repository) and [AUTOTITLE](/organizations/managing-user-access-to-your-organizations-repositories/managing-repository-roles/repository-roles-for-an-organization).
+    <!-- ============ ЗАВДАННЯ №1 ============ -->
+    <section id="home" class="page">
+      <div class="card">
+        <h2 style="margin:0 0 6px">Завдання №1: Макет власного сайту</h2>
+        <p class="muted" style="margin:0 0 10px">
+          Тип макету: <b>класичний багатоколонковий</b> (Header + 2 колонки + Footer), адаптивний.
+        </p>
 
-## About collaboration
+        <div class="siteHeader">
+          <b>Мій сайт (демо)</b>
+          <div class="links" style="margin-top:6px">
+            <a href="#task2">Завдання 2</a>
+            <a href="#flex">Завдання 3</a>
+            <a href="#report">Звіт</a>
+          </div>
+        </div>
 
-You can use repositories to manage your work and collaborate with others.
-* You can use issues to collect user feedback, report software bugs, and organize tasks you'd like to accomplish. For more information, see [AUTOTITLE](/issues/tracking-your-work-with-issues/about-issues).{% ifversion fpt or ghec %}
-* {% data reusables.discussions.you-can-use-discussions %}{% endif %}
-* You can use pull requests to propose changes to a repository. For more information, see [AUTOTITLE](/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests).
-* You can use {% data variables.product.prodname_projects_v2 %} to organize and prioritize your issues and pull requests. For more information, see [AUTOTITLE](/issues/planning-and-tracking-with-projects/learning-about-projects/about-projects).
+        <div class="siteLayout">
+          <aside class="siteAside">
+            <b>Меню</b>
+            <ul>
+              <li>Новини</li>
+              <li>Про мене</li>
+              <li>Контакти</li>
+            </ul>
 
-{% ifversion fpt or ghec %}
-With {% data variables.product.prodname_free_team %} for personal accounts and organizations, you can work with unlimited collaborators on unlimited public repositories with a full feature set, or unlimited private repositories with a limited feature set. To get advanced tooling for private repositories, you can upgrade to {% data variables.product.prodname_pro %}, {% data variables.product.prodname_team %}, or {% data variables.product.prodname_ghe_cloud %}. {% data reusables.gated-features.more-info %}
-{% else %}
-Each person and organization can own unlimited repositories and invite an unlimited number of collaborators to all repositories.
-{% endif %}
+            <div class="hint">
+              <b>Базова концепція:</b> блокова модель + Flexbox для побудови колонок.
+            </div>
+          </aside>
 
-## About repository visibility
+          <main class="siteMain">
+            <h3 style="margin-top:0">Вміст</h3>
+            <p>Макет містить шапку, дві колонки (бічна панель і основний контент) та підвал. Верстка адаптується під ширину екрана.</p>
+          </main>
+        </div>
 
-You can restrict who has access to a repository by choosing a repository's visibility: {% ifversion ghes or ghec %}public, internal, or private{% else %}public or private{% endif %}.
+        <div class="siteFooter">© ЛР №3. Верстка HTML-документу</div>
+      </div>
+    </section>
 
-When you create a repository, you can choose to make the repository public or private.{% ifversion ghec or ghes %} If you're creating the repository in an organization{% ifversion ghec %} that is owned by an enterprise account{% endif %}, you can also choose to make the repository internal.{% endif %}{% ifversion fpt %} Repositories in organizations that use {% data variables.product.prodname_ghe_cloud %} and are owned by an enterprise account can also be created with internal visibility. For more information, see [the {% data variables.product.prodname_ghe_cloud %} documentation](/enterprise-cloud@latest/repositories/creating-and-managing-repositories/about-repositories).{% endif %}
+    <!-- ============ ЗАВДАННЯ №2 ============ -->
+    <section id="task2" class="page">
+      <div class="card">
+        <h2 style="margin:0 0 6px">Завдання №2: Таблична верстка + Float-верстка</h2>
+        <p class="muted" style="margin:0">
+          Реалізовано: фіксована/гумова таблична верстка та фіксована/гумова верстка на плаваючих блоках (float).
+        </p>
+      </div>
 
-{%- ifversion fpt or ghec %}
-* {% ifversion ghec %}If your account is not a {% data variables.enterprise.prodname_managed_user %}, you can create public repositories. {% endif %}Public repositories are accessible to everyone on the internet.
-* Private repositories are only accessible to you, people you explicitly share access with, and, for organization repositories, certain organization members.
-{%- elsif ghes %}
-* If {% data variables.location.product_location %} is not in private mode or behind a firewall, public repositories are accessible to everyone on the internet. Otherwise, public repositories are available to everyone using {% data variables.location.product_location %}, including outside collaborators.
-* Private repositories are only accessible to you, people you explicitly share access with, and, for organization repositories, certain organization members.
-{%- endif %}
-{%- ifversion ghec or ghes %}
-* Internal repositories are accessible to all enterprise members. For more information, see [About internal repositories](#about-internal-repositories).
-{%- endif %}
+      <div class="card">
+        <h3 style="margin:0 0 10px">2.1 Фіксована таблична верстка</h3>
+        <div class="demoBox">
+          <div class="tableFrameFixed">
+            <table class="t">
+              <tr><td class="tHead" colspan="3">HEADER (таблиця фіксована)</td></tr>
+              <tr class="tRow">
+                <td class="tLeft">Ліва<br>колонка</td>
+                <td class="tMid">Контент</td>
+                <td class="tRight">Права<br>колонка</td>
+              </tr>
+              <tr><td class="tFoot" colspan="3">FOOTER</td></tr>
+            </table>
+          </div>
+        </div>
+      </div>
 
-{% ifversion fpt or ghec %}
+      <div class="card">
+        <h3 style="margin:0 0 10px">2.2 Гумова таблична верстка</h3>
+        <div class="demoBox">
+          <div class="tableFrameFluid">
+            <table class="t">
+              <tr><td class="tHead" colspan="3">HEADER (таблиця гумова)</td></tr>
+              <tr class="tRow">
+                <td class="tLeft">Ліва 20%</td>
+                <td class="tMid">Контент (адаптивний)</td>
+                <td class="tRight">Права 20%</td>
+              </tr>
+              <tr><td class="tFoot" colspan="3">FOOTER</td></tr>
+            </table>
+          </div>
+        </div>
+      </div>
 
-### Security considerations for repository visibility
+      <div class="card">
+        <h3 style="margin:0 0 10px">2.3 Фіксована float-верстка</h3>
+        <div class="demoBox">
+          <div class="floatFrameFixed">
+            <div class="fHeader">HEADER (float фіксована)</div>
 
-Public repositories expose your codebase to everyone, increasing the risk that attackers might exploit vulnerabilities or access sensitive information. You can mitigate these risks by enabling {% data variables.product.github %} security features such as {% data variables.product.prodname_dependabot %}, {% data variables.product.prodname_secret_scanning %}, push protection, and {% data variables.product.prodname_code_scanning %} for the repository. Additionally, you should add a security policy (a `SECURITY.md` file) to your repository, that outlines how vulnerabilities should be reported, to ensure that potential threats are addressed efficiently.
+            <div class="fLeft fixed180 center">Ліва</div>
+            <div class="fRight fixed180 center">Права</div>
+            <div class="fContent fixedContent">Контент (між блоками через margin)</div>
 
-Although private repositories restrict access to authorized users, it's still essential to implement strong access controls, multi-factor authentication, and regular audits to mitigate risks.
+            <div class="clearfix"></div>
+            <div class="fFooter">FOOTER</div>
+          </div>
+        </div>
+      </div>
 
-For more information, see [AUTOTITLE](/code-security/getting-started/quickstart-for-securing-your-repository).
+      <div class="card">
+        <h3 style="margin:0 0 10px">2.4 Гумова float-верстка</h3>
+        <div class="demoBox">
+          <div class="floatFrameFluid">
+            <div class="fHeader">HEADER (float гумова)</div>
 
-{% endif %}
+            <div class="fLeft fluid20 center">Ліва 20%</div>
+            <div class="fRight fluid20 center">Права 20%</div>
+            <div class="fContent fluidContent">Контент (адаптивний)</div>
 
-Organization owners always have access to every repository created in an organization. For more information, see [AUTOTITLE](/organizations/managing-user-access-to-your-organizations-repositories/managing-repository-roles/repository-roles-for-an-organization).
+            <div class="clearfix"></div>
+            <div class="fFooter">FOOTER</div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-People with admin permissions for a repository can change an existing repository's visibility. For more information, see [AUTOTITLE](/repositories/managing-your-repositorys-settings-and-features/managing-repository-settings/setting-repository-visibility).
+    <!-- ============ ЗАВДАННЯ №3 FLEXBOX ============ -->
+    <section id="flex" class="page">
+      <div class="card">
+        <h2 style="margin:0 0 6px">Завдання №3: FLEXBOX — Варіант 4</h2>
+        <p class="muted" style="margin:0 0 10px">
+          Розміщення блоків відповідає схемі: 1 (верх), 2 (ліва колонка), 3 (центр + червоний блок знизу), 4 (права колонка), 5 (низ).
+        </p>
 
-{% ifversion ghes or ghec %}
+        <div class="flexTitle">Варіант 4 (Flexbox)</div>
+        <div class="frame">
+          <div class="top">
+            <div class="mini"></div>
+            1
+          </div>
 
-## About internal repositories
+          <div class="middle">
+            <div class="left">2</div>
 
-{% data reusables.repositories.about-internal-repos %} For more information on innersource, see [AUTOTITLE](/admin/concepts/enterprise-best-practices/use-innersource).
+            <div class="centerBlock">
+              <div class="num">3</div>
+              <div class="red"></div>
+            </div>
 
-{% ifversion ghec %}
+            <div class="right">4</div>
+          </div>
 
-> [!NOTE]
-> You can only create internal repositories if you use {% data variables.product.prodname_ghe_cloud %} with an enterprise account. An enterprise account is a separate type of account that allows a central point of management for multiple organizations. For more information, see [AUTOTITLE](/get-started/learning-about-github/types-of-github-accounts).
+          <div class="bottom">5</div>
+        </div>
+      </div>
+    </section>
 
-{% endif %}
+    <!-- ============ ЗВІТ ============ -->
+    <section id="report" class="page">
+      <div class="card">
+        <h2 style="margin:0 0 6px">Звіт до лабораторної роботи №3</h2>
 
-Organization members have read permissions to all internal repositories in an enterprise, including those in organizations they are not a member of. Internal repositories are not visible to people {% ifversion fpt or ghec %}outside of the enterprise{% else %}who are not members of any organization{% endif %}, including outside collaborators on organization repositories. For more information, see [AUTOTITLE](/admin/user-management/managing-users-in-your-enterprise/roles-in-an-enterprise#enterprise-members) and [AUTOTITLE](/organizations/managing-user-access-to-your-organizations-repositories/managing-repository-roles/repository-roles-for-an-organization).
+        <h3>Тема</h3>
+        <p>ВЕРСТКА HTML-ДОКУМЕНТУ. ВЕРСТКА ЗАСОБАМИ CSS та FLEXBOX.</p>
 
-{% data reusables.repositories.internal-repo-default %}
+        <h3>Мета</h3>
+        <ul>
+          <li>Придбати практичні навички верстки сторінок засобами CSS та плаваючих елементів (float), визначити їх переваги й недоліки.</li>
+          <li>Придбати практичні навички верстки сторінок засобами CSS та FLEXBOX.</li>
+        </ul>
 
-By default, enterprise members can fork an internal repository into any organization where the user can create repositories. Organization owners can also allow users to create a fork owned by a user account, and can manage the forking policy for an organization. Enterprise owners can manage the forking policy for some or all organizations within an enterprise. For more information, see [AUTOTITLE](/organizations/managing-organization-settings/managing-the-forking-policy-for-your-organization) and [AUTOTITLE](/admin/policies/enforcing-policies-for-your-enterprise/enforcing-repository-management-policies-in-your-enterprise#enforcing-a-policy-for-forking-private-or-internal-repositories).
+        <h3>1) Місце розташування сайту та звітного документу</h3>
+        <p>Файл виконання лабораторної роботи збережено у вигляді HTML-документа <b>lr3.html</b>.</p>
 
-{% endif %}
+        <h3>2) Завдання №1 — макет власного сайту</h3>
+        <p><b>Тип макету:</b> класичний багатоколонковий (Header + 2 колонки + Footer), адаптивний.</p>
 
-## Next steps
+        <h3>3) Базова концепція верстки засобами CSS</h3>
+        <p>Під час верстки застосовано блокову модель (Box Model), роботу з відступами (margin/padding) та Flexbox для розміщення колонок і вирівнювання елементів.</p>
 
-Here are some helpful resources for taking your next steps with repositories.
+        <h3>4) Скріншот головної сторінки</h3>
+        <p class="hint"><b>Рисунок 1 – Головна сторінка сайту.</b> (вставити скрін з розділу “Завдання 1”)</p>
 
-* [AUTOTITLE](/repositories/creating-and-managing-repositories/best-practices-for-repositories): Learn how to use repositories most effectively.
-* [AUTOTITLE](/repositories/creating-and-managing-repositories/creating-a-new-repository): Create a new repository.
-* [AUTOTITLE](/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-and-deleting-branches-within-your-repository): Learn how to create and delete branches within your repository.
-* [AUTOTITLE](/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request): Create a pull request to propose and collaborate on changes to a repository.
+        <h3>5) HTML-програмний код макету власного сайту</h3>
+        <p class="muted">Код макету знаходиться у цьому файлі в розділі “Завдання 1” (HTML-структура) та у секції &lt;style&gt; (CSS-оформлення).</p>
+
+        <h3>6) Завдання №2 — сторінки верстки (таблиця / float)</h3>
+        <p>У роботі реалізовано табличну верстку (фіксовану та гумову) і блокову верстку на плаваючих елементах (фіксовану та гумову).</p>
+
+        <h3>7) Висновки: таблиці vs блоки (float)</h3>
+        <p><b>Таблична верстка:</b> проста для табличних даних, але не підходить як сучасний спосіб побудови макетів (складніше підтримувати й адаптувати).</p>
+        <p><b>Float-верстка:</b> дозволяє створювати колонки, але потребує очищення потоку (clearfix), у великих макетах менш зручна ніж Flex/Grid.</p>
+
+        <h3>8–9) Завдання №3 — FLEXBOX (варіант 4)</h3>
+        <p>Сторінка виконана технологією Flexbox. Середня частина побудована як flex-контейнер з трьома блоками (2, 3, 4), центральний блок займає решту ширини (flex:1), а червоний блок у ньому розміщено внизу завдяки flex-direction:column.</p>
+        <p class="hint"><b>Рисунок 2 – Сторінка, виконана технологією Flexbox (варіант 4).</b> (вставити скрін з розділу “Завдання 3”)</p>
+
+        <h3>10) Загальні висновки</h3>
+        <p>У лабораторній роботі виконано макет сайту та реалізовано різні способи верстки: табличний, блоковий на float та Flexbox. Flexbox є найбільш зручним для сучасної верстки, оскільки спрощує розміщення елементів, вирівнювання та побудову колонок, а також краще підходить для адаптивних макетів.</p>
+      </div>
+    </section>
+
+  </div>
+</body>
+</html>
